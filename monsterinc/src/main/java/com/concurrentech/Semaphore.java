@@ -1,3 +1,5 @@
+package com.concurrentech;
+
 /**
  * Interfaz que modela un semaforo
  * @version 1.0

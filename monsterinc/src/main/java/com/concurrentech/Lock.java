@@ -1,3 +1,5 @@
+package com.concurrentech;
+
 public interface Lock {
     
     /**

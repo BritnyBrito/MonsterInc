@@ -1,3 +1,5 @@
+package com.concurrentech;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TTASLock implements Lock {

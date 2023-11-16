@@ -1,3 +1,5 @@
+package com.concurrentech;
+
 public class Banno extends Filtro{
     private String tipo;
 

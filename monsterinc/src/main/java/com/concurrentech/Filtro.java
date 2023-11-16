@@ -1,3 +1,4 @@
+package com.concurrentech;
 
 /**
  * Clase que modela el Algoritmo del Filtro Modificado

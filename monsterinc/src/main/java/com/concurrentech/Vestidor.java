@@ -1,3 +1,5 @@
+package com.concurrentech;
+
 import java.util.ArrayList;
 
 public class Vestidor {
