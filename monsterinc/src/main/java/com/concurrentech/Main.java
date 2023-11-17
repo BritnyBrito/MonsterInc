@@ -1,5 +1,6 @@
 package com.concurrentech;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -10,7 +11,7 @@ public class Main {
     public static Monstruo[] monstuos;
     public static ArrayList<Banno> bannos;
     public static int NUMERO_MOSTRUOS = 5;
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         // Sección para test de baños y vestidores
         /** 
         inicializaBanos();
@@ -63,6 +64,29 @@ public class Main {
         // Iniciamos los hilos de las mesas
         for (Thread thread : mesasThreads) {
             thread.start();
+        }
+
+        // Llevamos pedidos a las mesas cada 2 segundos
+        while (true) {
+            Thread.sleep(2000);
+            for (Mesa mesa : mesas) {
+                Mesero mesero = mesa.getMesero();
+                mesero.llevarPedido(mesa);
+            }
+            // Terminamos si usuario presiona enter
+            if (System.in.available() > 0) {
+                break;
+            }
+        }
+
+        // Finalizamos los hilos de los chefs
+        for (Thread thread : chefsThreads) {
+            thread.join();
+        }
+        
+        // Finalizamos los hilos de las mesas
+        for (Thread thread : mesasThreads) {
+            thread.join();
         }
     }
 

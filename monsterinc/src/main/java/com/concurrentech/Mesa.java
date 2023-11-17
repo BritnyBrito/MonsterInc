@@ -77,6 +77,10 @@ public class Mesa implements Runnable {
         System.out.println("Mesa " + numero + " hizo pedido de " + platillo);
     }
 
+    public Mesero getMesero() {
+        return mesero;
+    }
+
     @Override
     public String toString() {
         return "" + numero;

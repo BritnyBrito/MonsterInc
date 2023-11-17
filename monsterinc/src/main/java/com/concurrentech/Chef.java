@@ -36,6 +36,8 @@ public class Chef implements Runnable {
         Platillo platillo = pedido.getPlatillo();
         // En caso de que el platillo requiera chef profesional y no lo seamos, regresa null
         if (platillo.requiereProfesional() && !esProfesional) {
+            // Notificamos
+            System.out.println("Chef " + nombre + " no puede producir " + platillo + " porque requiere chef profesional");
             return;
         }
         // Verificamos que todos los ingredientes que solicita el platillo estén disponibles
@@ -43,6 +45,8 @@ public class Chef implements Runnable {
         // En caso de que no, se regresa null
         for (String ingrediente : platillo.getIngredientes().keySet()) {
             if (cafeteria.getInventario(ingrediente) < platillo.getCantidad(ingrediente)) {
+                // Notificamos
+                System.out.println("Chef " + nombre + " no puede producir " + platillo + " porque no hay suficiente " + ingrediente);
                 return;
             } 
         }
