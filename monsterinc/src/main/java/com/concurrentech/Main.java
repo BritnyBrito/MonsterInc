@@ -9,6 +9,8 @@ public class Main {
     public static ArrayList<Banno> bannos;
     public static int NUMERO_MOSTRUOS = 5;
     public static void main(String[] args) throws InterruptedException {
+        /** 
+         * Sección para test de baños y vestidores
         inicializaBanos();
         inicializaMonstruos();
         initThreads();
@@ -19,6 +21,8 @@ public class Main {
             t.join();
         }
         System.out.println("Yap" );
+         */
+        
     }
     private static void inicializaMonstruos(){
         monstuos = new Monstruo[NUMERO_MOSTRUOS];
