@@ -23,9 +23,9 @@ public class Cafeteria {
     private ReentrantLock pedidosPendientesLock;
 
     // Constructor 
-    public Cafeteria(int maxClientes) {
-        this.platillos = new LinkedList<Platillo>();
-        this.inventario = new HashMap<String, Integer>();
+    public Cafeteria(int maxClientes, LinkedList<Platillo> platillos, HashMap<String, Integer> inventario) {
+        this.platillos = platillos;
+        this.inventario = inventario;
         this.maxClientes = maxClientes;
         this.inventarioLock = new ReentrantLock();
         this.pedidosListos = new LinkedList<Pedido>();
@@ -125,6 +125,10 @@ public class Cafeteria {
         } finally {
             pedidosListosLock.unlock();
         }
+    }
+
+    public LinkedList<Platillo> getPlatillos() {
+        return platillos;
     }
 
     @Override

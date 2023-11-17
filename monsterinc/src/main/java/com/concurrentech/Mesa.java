@@ -2,7 +2,7 @@ package com.concurrentech;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Mesa {
+public class Mesa implements Runnable {
     // Número de mesa
     private int numero;
     // Capacida de la mesa
@@ -13,14 +13,30 @@ public class Mesa {
     private ReentrantLock lock;
     // Cafeteria asociada
     private Cafeteria cafeteria;
+    // Mesero asociado
+    private Mesero mesero;
 
     // Constructor
-    public Mesa(int numero, int tamanno, Cafeteria cafeteria) {
+    public Mesa(int numero, int tamanno, Cafeteria cafeteria, Mesero mesero) {
         this.numero = numero;
         this.tamanno = tamanno;
         this.ocupados = 0;
         this.lock = new ReentrantLock();
         this.cafeteria = cafeteria;
+        this.mesero = mesero;
+    }
+
+    @Override
+    public void run() {
+        // Hacemos un pedido cada 2 segundos
+        while (true) {
+            try {
+                Thread.sleep(2000);
+                hacerPedido();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // Método para agregar un cliente a la mesa, protegido por candado
@@ -51,6 +67,16 @@ public class Mesa {
         }
     }
 
+    // Método para seleccionar algún platillo al azar de los que ofrece la cafeteria
+    // y hacer un pedido
+    public void hacerPedido() {
+        int indicePlatillo = (int) (Math.random() * cafeteria.getPlatillos().size());
+        Platillo platillo = cafeteria.getPlatillos().get(indicePlatillo);
+        mesero.hacerPedido(platillo, this);
+        // Notificamos la creación del pedido
+        System.out.println("Mesa " + numero + " hizo pedido de " + platillo);
+    }
+
     @Override
     public String toString() {
         return "" + numero;
@@ -75,11 +101,6 @@ public class Mesa {
             if (other.lock != null)
                 return false;
         } else if (!lock.equals(other.lock))
-            return false;
-        if (cafeteria == null) {
-            if (other.cafeteria != null)
-                return false;
-        } else if (!cafeteria.equals(other.cafeteria))
             return false;
         return true;
     }

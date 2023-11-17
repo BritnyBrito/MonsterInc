@@ -5,13 +5,13 @@ import java.util.LinkedList;
 public class Mesero {
     // Restaurante asociado
     private Cafeteria cafeteria;
-    // Mesa asociada
-    private Mesa mesa;
+    // Nombre 
+    private String nombre;
 
     // Constructor 
-    public Mesero(Cafeteria cafeteria, Mesa mesa) {
+    public Mesero(String nombre, Cafeteria cafeteria) {
         this.cafeteria = cafeteria;
-        this.mesa = mesa;
+        this.nombre = nombre;
     }
 
     // Método que crea un pedido y lo agrega a la fila de pedidos pendientes
@@ -21,7 +21,7 @@ public class Mesero {
     }
 
     // Método que toma un pedido de la fila de pedidos listos y lo lleva a su mesa
-    public void llevarPedido() {
+    public void llevarPedido(Mesa mesa) {
         int indicePedido = cafeteria.buscarOrden(mesa);
         if (indicePedido != -1) {
             Pedido pedido = cafeteria.sacarPedidoListo(indicePedido);

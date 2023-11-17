@@ -12,9 +12,10 @@ public class Platillo {
     private boolean requiereProfesional;
 
     // Constructor
-    public Platillo(HashMap<String, Integer> ingredientes, String nombre) {
+    public Platillo(String nombre, HashMap<String, Integer> ingredientes, boolean requiereProfesional) {
         this.ingredientes = ingredientes;
         this.nombre = nombre;
+        this.requiereProfesional = requiereProfesional;
     }
 
     // Método que regresa todos los ingredientes
