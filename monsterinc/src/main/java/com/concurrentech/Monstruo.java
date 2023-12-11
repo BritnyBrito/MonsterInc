@@ -11,6 +11,7 @@ public class Monstruo {
         this.contrasena = contrasena;
         locker = new Vestidor(contrasena);
     }
+    
     public void simulaVestidor(String elemento){
         locker.agregaElemento(elemento, contrasena);
     }
