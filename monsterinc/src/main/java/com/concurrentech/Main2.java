@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 
 public class Main2 {
+    // PARA LOS BANOS Y VESTIDORES
     // variable para saber a que monstuo se le asigna que accion: ir al vestido y baño
     private static int j = 0;
     // arreglo de hilos donde cada hilo permitira que un monstruo realice acciones
@@ -17,7 +18,20 @@ public class Main2 {
     public static ArrayList<Banno> bannos;
     // Máximo número de monstruos que trataran de usar los baños y vestidor
     public static int NUMERO_MOSTRUOS = 5;
+
+    // PARA LA FABRICA DE PUERTAS
+    // Fabrica de puertas
+    public static FabricaPuertas fabricaPuertas;
+    // Hilo para llevar las ejecucionde la fabrica de puertas
+    public static Thread fabricaPuertasAcciones;
+
+    // PARA LA FABRICA DE TANQUE
+    // Fabrica de tanque
+    public static FabricaTanques fabricaTanques;
+    // Hilo para llevar las ejecucionde la fabrica de tanques
+    public static Thread fabricaTanquesAcciones;
     public static void main(String[] args) throws InterruptedException, IOException {
+        // VESTIDORES Y BANNOS
         inicializaBanos();
         inicializaMonstruos();
         initThreads();
@@ -27,6 +41,16 @@ public class Main2 {
         for (Thread t : monstruosAcciones) {
             t.join();
         }
+        
+        // FABRICA DE PUERTAS
+        fabricaPuertas = new FabricaPuertas();
+        fabricaPuertasAcciones = new Thread(() -> fabricaPuertas.inicia());
+        fabricaPuertasAcciones.start();
+        
+        //FABRICA DE TANQUE
+        fabricaTanques = new FabricaTanques();
+        fabricaTanquesAcciones = new Thread(() -> fabricaTanques.inicia());
+        fabricaTanquesAcciones.start();
     }
     /**
     * Inicializamos los monstruos que iran al banno y usaran su vestidor

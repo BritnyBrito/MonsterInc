@@ -7,7 +7,6 @@
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Utileria.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Mesero.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Semaphore.java
-/Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/ConstuctorPuertas.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/FabricaTanques.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Main2.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Banno.java
@@ -15,6 +14,7 @@
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/CentroRisas.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/AlmacenPuertas.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Puerta.java
+/Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/ConstructorPuertas.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Mesa.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Cafeteria.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/App.java
@@ -26,4 +26,3 @@
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/AlmacenTanques.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Reparador.java
 /Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Main.java
-/Users/britnybrito/Desktop/MonsterInc/monsterinc/src/main/java/com/concurrentech/Casillero.java
