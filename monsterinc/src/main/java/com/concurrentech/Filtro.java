@@ -44,6 +44,12 @@ public class Filtro implements Semaphore {
         }
 
     }
+    /**
+     * Método para ver si existe o no un elemento en niveles superiores
+     * @param i el nivel actual
+     * @param me identificador del hilo
+     * @return si existe o no un elemento en niveles superiores
+     */
 
     private boolean existeK(int i, int me) {
         for (int k = 0; k < level.length; k++) {

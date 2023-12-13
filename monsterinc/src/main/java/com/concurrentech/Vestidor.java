@@ -1,24 +1,69 @@
 package com.concurrentech;
 
 import java.util.ArrayList;
-
+/**
+    Clase para representar los vestidores
+*/
 public class Vestidor {
-    private String contra;
+    // constraseña del vestidor
+    private String contrasena;
+    // lista que contiene los elementos guardados en el vestidor 
     private ArrayList<String> elementos;
-    public Vestidor(String contra){
+    /**
+     * Constructor de un vestidor
+     * @param contrasena
+     */
+    public Vestidor(String contrasena){
         this.elementos = new ArrayList<>();
-        this.contra = contra;
+        this.contrasena = contrasena;
     }
-    public void agregaElemento(String e, String contra){
-        if(this.contra.equals(contra)){
-            elementos.add(e);
-            System.out.println("'elemento agregado a casillero'" );
+    /**
+     * Método para agregar un elemento al vestidor
+     * @param elemento elemento a agregar al vestidor
+     * @param contrasena contrasenaseña del vestidor
+     */
+    public void agregaElemento(String elemento, String contrasena){
+        // verifica que en efecto la contaseña sea correcta
+        if(this.contrasena.equals(contrasena)){
+            elementos.add(elemento);
+            System.out.println(elemento + " agregado a casillero" );
         }
     }
-    public String getContra() {
-        return contra;
+    /**
+     * Método para eliminar un elemento al vestidor
+     * @param elemento elemento a eliminar al vestidor
+     * @param contrasena contrasenaseña del vestidor
+     */
+    public void eliminaElemento(String elemento, String contrasena){
+        // verifica que en efecto la contaseña sea correcta
+        if(this.contrasena.equals(contrasena)){
+            if (elementos.contains(elemento)) {
+                elementos.remove(elemento);
+                //Integer.valueOf(
+                System.out.println(elemento + " eliminado");
+            } else {
+                System.out.println("No esta " + elemento + " que quieres eliminar");
+            }
+        }
+        
     }
-    public void setContra(String contra) {
-        this.contra = contra;
+    /**
+     * Método para modificar un elemento al vestidor
+     * @param elemento elemento a modificar del vestidor
+     * @param elementoNuevo elemento modificado del vestidor
+     * @param contrasena contrasenaseña del vestidor
+     */
+    public void modificaElemento(String elemento, String elementoNuevo, String contrasena){
+        // verifica que en efecto la contaseña sea correcta
+        if(this.contrasena.equals(contrasena)){
+            if (elementos.contains(elemento)) {
+                int i = elementos.indexOf(elemento);
+                elementos.set(i, elementoNuevo);
+                System.out.println(elemento + " modificado");
+            } else {
+                System.out.println("No esta " + elemento + " que quieres modificar");
+            }
+        }
+        
     }
 }

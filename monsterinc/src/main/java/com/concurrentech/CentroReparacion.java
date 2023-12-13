@@ -46,11 +46,11 @@ public class CentroReparacion {
     }
     public void inicializaMonstruos(){
         monstruos = new Reparador[NUMERO_MOSTRUOS];
-        monstruos[0] = new Reparador(new ArrayList<Integer>(Arrays.asList(1,2)),"123");
-        monstruos[1] = new Reparador(new ArrayList<Integer>(Arrays.asList(1,2)),"dcd");
-        monstruos[2] = new Reparador(new ArrayList<Integer>(Arrays.asList(1,0)),"ew");
-        monstruos[3] = new Reparador(new ArrayList<Integer>(Arrays.asList(2)),"43r");
-        monstruos[4] = new Reparador(new ArrayList<Integer>(Arrays.asList(0)),"4r");
+        monstruos[0] = new Reparador(new ArrayList<Integer>(Arrays.asList(1,2)),"123","Peludo");
+        monstruos[1] = new Reparador(new ArrayList<Integer>(Arrays.asList(1,2)),"dcd","Peludo");
+        monstruos[2] = new Reparador(new ArrayList<Integer>(Arrays.asList(1,2)),"ew","Peludo");
+        monstruos[3] = new Reparador(new ArrayList<Integer>(Arrays.asList(0,1)),"43r", "Grande");
+        monstruos[4] = new Reparador(new ArrayList<Integer>(Arrays.asList(0,1)),"4rmk","Grande");
     }
     public void initThreads() throws InterruptedException{
         int pos = i;
