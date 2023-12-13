@@ -76,7 +76,7 @@ public class AppTest
         for(Tanque t:  tanques){xs
             centroReparacion.simultaRoto(t);   
         }*/
-        Main2 m = new Main2();
+        Main m = new Main();
         String[] args = {};
         try {
             m.main(args);
