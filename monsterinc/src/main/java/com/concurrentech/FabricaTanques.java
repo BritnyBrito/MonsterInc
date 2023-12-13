@@ -10,13 +10,13 @@ public class FabricaTanques {
     // tipos de tanques que se fabrican
     String [] tipos = {"Estandar", "Maxitanque,", "Ultratanque,", "Giga tanque"};
     // capacidad de un tipo de tanque respecto a otro tipo
-    int n = 1;
-    int m = 2;
-    int l = 2;
-    int h = 3;
-    int[] capacidades = {n,m*n,l*m*n, 2*h*l*m*n};
+    private int n = 1;
+    private int m = 2;
+    private int l = 2;
+    private int h = 3;
+    private int[] capacidades = {n,m*n,l*m*n, 2*h*l*m*n};
     // Prpbabilidades de que se fabrica un tipo de tanque
-    float[] probabilidades ={0.5f,0.5f +0.25f,0.5f +0.25f+0.15f};
+    private float[] probabilidades ={0.5f,0.5f +0.25f,0.5f +0.25f+0.15f};
     // el almacen donde se van a guardar los tanque fabricados
     private AlmacenTanques almacen = new AlmacenTanques();
     // Monstruos que construiran los tanques
