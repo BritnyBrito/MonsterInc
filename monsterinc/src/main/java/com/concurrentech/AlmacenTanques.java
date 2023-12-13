@@ -45,28 +45,45 @@ public class AlmacenTanques {
      * En caso de no encontrar un tanque del tipo dado, o
      * de que no haya tanques disponibles, el método
      * espera hasta que haya un tanque disponible.
+     * Al sacar un tanque del almacen, se elimina de la lista.
      * @param tipo el tipo de tanque a buscar
      * @return el tanque encontrado
      */
     public Tanque getTanque(String tipo){
         // Se protege el almacén
         candado.lock();
-        // Se busca el tanque dependiendo su tipo
-        // Se busca un tanque disponible
-        for(Tanque tanque : tanques){
-            if(tanque.getEstado().equals("disponible") && tanque.getTipo().equals(tipo)){
-                // Se cambia el estado del tanque
-                tanque.setEstado("ocupado");
-                // Se desbloquea el almacén
-                candado.unlock();
-                // Se regresa el tanque
-                return tanque;
+        // Se busca un tanque del tipo dado
+        Tanque tanque = null;
+        for (Tanque t : tanques) {
+            if (t.getTipo().equals(tipo) && t.getEstado().equals("disponible")) {
+                tanque = t;
+                break;
             }
         }
+        // Si no se encontró un tanque del tipo dado, se espera
+        while (tanque == null) {
+            try {
+                candado.unlock();
+                Thread.sleep(1000);
+                candado.lock();
+                for (Tanque t : tanques) {
+                    if (t.getTipo().equals(tipo) && t.getEstado().equals("disponible")) {
+                        tanque = t;
+                        break;
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
+        }
+        // Se cambia el estado del tanque a ocupado
+        tanque.setEstado("ocupado");
+        // Se elimina el tanque de la lista
+        tanques.remove(tanque);
         // Se desbloquea el almacén
         candado.unlock();
-        // Si no se encontró un tanque disponible, se espera
-        // hasta que haya un tanque disponible
-        return getTanque(tipo);
+        // Se regresa el tanque
+        return tanque;
     }
 }

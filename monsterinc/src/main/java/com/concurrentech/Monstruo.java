@@ -90,4 +90,8 @@ public class Monstruo {
         }
         return banno;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
 }

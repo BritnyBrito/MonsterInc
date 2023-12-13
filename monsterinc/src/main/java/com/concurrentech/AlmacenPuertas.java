@@ -47,40 +47,66 @@ public class AlmacenPuertas {
      * En caso de no encontrar una puerta del tipo dado, o
      * de que no haya puertas disponibles, el método
      * espera hasta que haya una puerta disponible.
+     * Al sacar una puerta del almacen, se elimina de la lista.
      * @param tipo el tipo de puerta a buscar
      * @return la puerta encontrada
      */
     public Puerta getPuerta(String tipo){
         // Se protege el almacén
         candado.lock();
-        // Se busca la puerta dependiendo su tipo
+        // Se busca una puerta del tipo dado
+        Puerta puerta = null;
         if(tipo.equals("nino")){
-            // Se busca una puerta disponible
-            for(Puerta puerta : puertasNinos){
-                if(puerta.getEstado().equals("disponible")){
-                    // Se cambia el estado de la puerta
-                    puerta.setEstado("ocupado");
-                    // Se desbloquea el almacén
-                    candado.unlock();
-                    return puerta;
+            for (Puerta p : puertasNinos) {
+                if (p.getEstado().equals("disponible")) {
+                    puerta = p;
+                    break;
                 }
             }
         }else{
-            // Se busca una puerta disponible
-            for(Puerta puerta : puertasAdultos){
-                if(puerta.getEstado().equals("disponible")){
-                    // Se cambia el estado de la puerta
-                    puerta.setEstado("ocupado");
-                    // Se desbloquea el almacén
-                    candado.unlock();
-                    return puerta;
+            for (Puerta p : puertasAdultos) {
+                if (p.getEstado().equals("disponible")) {
+                    puerta = p;
+                    break;
                 }
             }
         }
+        // Si no hay puertas disponibles, se espera
+        while(puerta == null){
+            try {
+                candado.unlock();
+                Thread.sleep(1000);
+                candado.lock();
+                if(tipo.equals("nino")){
+                    for (Puerta p : puertasNinos) {
+                        if (p.getEstado().equals("disponible")) {
+                            puerta = p;
+                            break;
+                        }
+                    }
+                }else{
+                    for (Puerta p : puertasAdultos) {
+                        if (p.getEstado().equals("disponible")) {
+                            puerta = p;
+                            break;
+                        }
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        // Se cambia el estado de la puerta a ocupada
+        puerta.setEstado("ocupada");
+        // Se elimina la puerta de la lista
+        if(tipo.equals("nino")){
+            puertasNinos.remove(puerta);
+        }else{
+            puertasAdultos.remove(puerta);
+        }
         // Se desbloquea el almacén
         candado.unlock();
-        // Si no se encontró una puerta disponible, se espera
-        // hasta que haya una disponible
-        return getPuerta(tipo);
+        // Se regresa la puerta
+        return puerta;
     }
 }
