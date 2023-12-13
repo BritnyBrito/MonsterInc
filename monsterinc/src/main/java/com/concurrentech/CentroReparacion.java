@@ -41,6 +41,7 @@ public class CentroReparacion {
         // vemos si esta utileria se rompera o no
         if (Math.random() < probabilidadRoto){
             // marcamos que en efecto se debe hacer una reparacion
+            System.out.print("utiería llevada a centro de reparación");
             utileria.setEstado("reparacion");
             ordenReparacion.add(utileria);
             try{
