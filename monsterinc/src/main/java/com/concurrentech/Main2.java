@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.HashMap;
 
 public class Main2 {
@@ -20,17 +22,56 @@ public class Main2 {
     public static int NUMERO_MOSTRUOS = 5;
 
     // PARA LA FABRICA DE PUERTAS
-    // Fabrica de puertas
     public static FabricaPuertas fabricaPuertas;
     // Hilo para llevar las ejecucionde la fabrica de puertas
     public static Thread fabricaPuertasAcciones;
 
-    // PARA LA FABRICA DE TANQUE
-    // Fabrica de tanque
+    // PARA LA FABRICA DE TANQUES
     public static FabricaTanques fabricaTanques;
     // Hilo para llevar las ejecucionde la fabrica de tanques
     public static Thread fabricaTanquesAcciones;
+    
+    //PARA EL RECOLECTOR
+    public static Recolector recolector;
+    // Hilo para realizar la alimentación de energía de la cuiudad
+    public static Thread revisaRecolector;
+    // timer para ver cuando hacer la alimentación
+    public static Timer timer;
+    // cada cuanto alimentar monstruopolis
+    private static int TIEMPO_ALIMENTACION= 1 * 10;
     public static void main(String[] args) throws InterruptedException, IOException {
+        // RECOLECTOR
+        timer = new Timer();
+        recolector = new Recolector();
+        revisaRecolector = new Thread(() -> alimentaCiudad());
+        revisaRecolector.start();
+        // TEST esto correrá en Centro sustos
+        Tanque[] tanques = {
+            new Tanque("a", 1),
+            new Tanque("b", 2),
+            new Tanque("a", 3),
+            new Tanque("c", 1),
+            new Tanque("a", 2),
+            new Tanque("a", 3),
+            new Tanque("b", 1),
+            new Tanque("a", 1),
+            new Tanque("a", 2),
+            new Tanque("a", 3),
+            new Tanque("b", 1),
+        };
+        ArrayList<Thread> aaa = new ArrayList<>();
+        for(Tanque t:  tanques){
+            aaa.add(new Thread(() -> recolector.vaciaTanque(t)));
+            try{
+                Thread.sleep(0, 40 * 1000);
+                
+            }catch(InterruptedException e){} 
+        }
+        for( Thread t: aaa){
+            System.out.println("aaaaaa");
+            t.start();
+        }
+        // FIN TEST
         // VESTIDORES Y BANNOS
         inicializaBanos();
         inicializaMonstruos();
@@ -47,10 +88,12 @@ public class Main2 {
         fabricaPuertasAcciones = new Thread(() -> fabricaPuertas.inicia());
         fabricaPuertasAcciones.start();
         
-        //FABRICA DE TANQUE
+        // FABRICA DE TANQUES
         fabricaTanques = new FabricaTanques();
         fabricaTanquesAcciones = new Thread(() -> fabricaTanques.inicia());
         fabricaTanquesAcciones.start();
+        
+        
     }
     /**
     * Inicializamos los monstruos que iran al banno y usaran su vestidor
@@ -195,6 +238,16 @@ public class Main2 {
 
         return cafeteria;
     }
-
+    /**
+     * Metodo que se aseguro que se le brinde energía a la ciudad cada TIEMPO_ALIMENTACION 
+     */
+    private static void alimentaCiudad(){
+       timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                recolector.vaciaRecolector();
+            }
+        }, 0, TIEMPO_ALIMENTACION); 
+    }
 
 }

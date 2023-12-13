@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
 Test set: com.concurrentech.AppTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.061 s - in com.concurrentech.AppTest
-shouldAnswerWithTrue  Time elapsed: 0.05 s
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.103 s - in com.concurrentech.AppTest
+shouldAnswerWithTrue  Time elapsed: 0.092 s

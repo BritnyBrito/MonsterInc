@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.concurrentech.AppTest" time="0.061" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.concurrentech.AppTest" time="0.103" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="20"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="AF"/>
     <property name="sun.boot.library.path" value="/usr/local/Cellar/openjdk/20.0.1/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/britnybrito/Desktop/MonsterInc/monsterinc/target/surefire/surefirebooter9394930693331700930.jar /Users/britnybrito/Desktop/MonsterInc/monsterinc/target/surefire 2023-12-12T22-50-12_996-jvmRun1 surefire11276688694976076077tmp surefire_02248889358209625952tmp"/>
+    <property name="sun.java.command" value="/Users/britnybrito/Desktop/MonsterInc/monsterinc/target/surefire/surefirebooter4038725787899773848.jar /Users/britnybrito/Desktop/MonsterInc/monsterinc/target/surefire 2023-12-12T23-39-40_287-jvmRun1 surefire18389162975344216233tmp surefire_06809337342909507480tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/britnybrito/Desktop/MonsterInc/monsterinc/target/test-classes:/Users/britnybrito/Desktop/MonsterInc/monsterinc/target/classes:/Users/britnybrito/.m2/repository/org/junit/jupiter/junit-jupiter/5.5.1/junit-jupiter-5.5.1.jar:/Users/britnybrito/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.5.1/junit-jupiter-api-5.5.1.jar:/Users/britnybrito/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/Users/britnybrito/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/britnybrito/.m2/repository/org/junit/platform/junit-platform-commons/1.5.1/junit-platform-commons-1.5.1.jar:/Users/britnybrito/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.5.1/junit-jupiter-params-5.5.1.jar:/Users/britnybrito/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.5.1/junit-jupiter-engine-5.5.1.jar:/Users/britnybrito/.m2/repository/org/junit/platform/junit-platform-engine/1.5.1/junit-platform-engine-1.5.1.jar:"/>
@@ -29,7 +29,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/britnybrito/Desktop/MonsterInc/monsterinc/target/surefire/surefirebooter9394930693331700930.jar"/>
+    <property name="surefire.real.class.path" value="/Users/britnybrito/Desktop/MonsterInc/monsterinc/target/surefire/surefirebooter4038725787899773848.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="20.0.1"/>
@@ -58,5 +58,5 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="64.0"/>
   </properties>
-  <testcase name="shouldAnswerWithTrue" classname="com.concurrentech.AppTest" time="0.05"/>
+  <testcase name="shouldAnswerWithTrue" classname="com.concurrentech.AppTest" time="0.092"/>
 </testsuite>
