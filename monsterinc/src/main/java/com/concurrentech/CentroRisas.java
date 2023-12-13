@@ -60,9 +60,14 @@ public class CentroRisas {
         tanque.setEnergia(tanque.getCapacidad());
         // Si alguno de los monstruos es Sully, llenamos un maxitanque
         if (m1.getTipo().equals("Wazowski") || m2.getTipo().equals("Wazowski")) {
-            Tanque maxitanque = almacenTanques.getTanque("Giga tanque");
-            maxitanque.setEnergia(maxitanque.getCapacidad());
-            tanquesLlenos.add(maxitanque);
+            Tanque gigatanque = almacenTanques.getTanque("Giga tanque");
+            gigatanque.setEnergia(gigatanque.getCapacidad());
+            tanquesLlenos.add(gigatanque);
+            // Notificamos la risa
+            System.out.println("Wazowski ha llenado un gigatanque con risas!");
+        } else {
+            // Notificamos la risa
+            System.out.println("Los monstruos han llenado un tanque con risas!");
         }
         // Quitamos el tanque y la puerta de la estacion
         estacion.setTanque(null);
@@ -73,6 +78,7 @@ public class CentroRisas {
             tanquesLlenos.add(tanque);
             numTanques++;
         }
+        candado.unlock();
         // Regresamos la puerta a su almacen
         almacenPuertas.agregaPuerta(puerta);
     }

@@ -18,7 +18,7 @@ public class FabricaTanques {
     // Prpbabilidades de que se fabrica un tipo de tanque
     private float[] probabilidades ={0.5f,0.5f +0.25f,0.5f +0.25f+0.15f};
     // el almacen donde se van a guardar los tanque fabricados
-    private AlmacenTanques almacen = new AlmacenTanques();
+    private AlmacenTanques almacen;
     // Monstruos que construiran los tanques
     private ConstuctorTanques[] monstruos;
     // Guardamos las actividades que cada monstruo debe realizar
@@ -29,6 +29,14 @@ public class FabricaTanques {
     private  int j = 0;
     // para revisar cuantas rondas se llevan de construccion de tanques
     private int iteraciones = 0;
+
+    /**
+     * Constructor de la clase
+     * @param almacen almacen de tanques
+     */
+    public FabricaTanques(AlmacenTanques almacen){
+        this.almacen = almacen;
+    }
 
     /**
      * Método para empezar las operaciones de la fábrica

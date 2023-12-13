@@ -14,7 +14,7 @@ public class FabricaPuertas {
     // probabillidad de que sea una puerta de pijamada
     private float pPijamada = 0.1f;
     // el almacen donde se van a guardar las puertas fabricadas
-    private AlmacenPuertas almacen = new AlmacenPuertas();
+    private AlmacenPuertas almacen;
     // Monstruos que construiran las puertas
     private ConstructorPuertas[] monstruos;
     // Guardamos las actividades que cada monstruo debe realizar
@@ -30,6 +30,14 @@ public class FabricaPuertas {
     private int salto = 0;
     // para revisar cuantas rondas se llevan de construccion de puertas
     private int iteraciones = 0;
+
+    /**
+     * Constructor de la clase
+     * @param almacen almacen de puertas
+     */
+    public FabricaPuertas(AlmacenPuertas almacen){
+        this.almacen = almacen;
+    }
 
     /**
      * Método para empezar las operaciones de la fábrica

@@ -41,68 +41,53 @@ public class Main {
     private static int TIEMPO_ALIMENTACION= 10 * 1000;
 
     public static void main(String[] args) throws InterruptedException, IOException {
+        /// ALMACENES
+        AlmacenPuertas almacenPuertas = new AlmacenPuertas();
+        AlmacenTanques almacenTanques = new AlmacenTanques();
+
         // FABRICA DE PUERTAS
-        fabricaPuertas = new FabricaPuertas();
+        fabricaPuertas = new FabricaPuertas(almacenPuertas);
         fabricaPuertasAcciones = new Thread(() -> fabricaPuertas.inicia());
         fabricaPuertasAcciones.start();
         
         // FABRICA DE TANQUES
-        fabricaTanques = new FabricaTanques();
+        fabricaTanques = new FabricaTanques(almacenTanques);
         fabricaTanquesAcciones = new Thread(() -> fabricaTanques.inicia());
         fabricaTanquesAcciones.start();
+
+        // CENTROS
+        CentroRisas centroRisas = new CentroRisas(almacenPuertas, almacenTanques);
+        CentroSustos centroSustos = new CentroSustos(almacenPuertas, almacenTanques);
         
-        // RECOLECTOR
+        // Creamos recolectores
+        LinkedList<Recolector> recolectores = new LinkedList<Recolector>();
+        recolectores.add(new Recolector(almacenTanques, centroSustos, centroRisas));
+        recolectores.add(new Recolector(almacenTanques, centroSustos, centroRisas));
+        recolectores.add(new Recolector(almacenTanques, centroSustos, centroRisas));
+
+        // Creamos los hilos de los recolectores
+        LinkedList<Thread> recolectoresThreads = new LinkedList<Thread>();
+        for (Recolector recolector : recolectores) {
+            Thread thread = new Thread(recolector);
+            thread.setName(recolector.toString());
+            recolectoresThreads.add(thread);
+        }
+
+        // Iniciamos los hilos de los recolectores
+        for (Thread thread : recolectoresThreads) {
+            thread.start();
+        }
+
+        // Iniciamos el timer para alimentar la ciudad
         timer = new Timer();
-        recolector = new Recolector();
         revisaRecolector = new Thread(() -> alimentaCiudad());
         revisaRecolector.start();
-        // TEST esto correrá en Centro sustos
-        Tanque[] tanques = {
-            new Tanque("a", 1),
-            new Tanque("b", 2),
-            new Tanque("a", 3),
-            new Tanque("c", 1),
-            new Tanque("a", 2),
-            new Tanque("a", 3),
-            new Tanque("b", 1),
-            new Tanque("a", 1),
-            new Tanque("a", 2),
-            new Tanque("a", 3),
-            new Tanque("b", 1),
-        };
-        ArrayList<Thread> aaa = new ArrayList<>();
-        for(Tanque t:  tanques){
-            aaa.add(new Thread(() -> recolector.vaciaTanque(t)));
-        }
-        for( Thread t: aaa){
-            System.out.println("aaaaaa");
-            t.start();
-        }
+
         // PARA CENTRO REPACION
-        CentroReparacion centroReparacion = new CentroReparacion();
-        Tanque[] tanques2 = {
-            new Tanque("a", 1),
-            new Tanque("b", 2),
-            new Tanque("a", 3),
-            new Tanque("c", 1),
-            new Tanque("a", 2),
-            new Tanque("a", 3),
-            new Tanque("b", 1),
-            new Tanque("a", 1),
-            new Tanque("a", 2),
-            new Tanque("a", 3),
-            new Tanque("b", 1),
-        };
-        ArrayList<Thread> aaa2 = new ArrayList<>();
-        Thread centroReparacionAA = new Thread(() -> centroReparacion.iniciaCentroReparacion());
-        centroReparacionAA.start();
-        for(Tanque t:  tanques2){
-            aaa2.add(new Thread(() -> centroReparacion.simulaRoto(t)));
-        }
-        for( Thread t: aaa2){
-            System.out.println("aaaaaa2");
-            t.start();
-        }
+        CentroReparacion centroReparacion = new CentroReparacion(almacenPuertas, almacenTanques);
+        Thread centroReparacionAcciones = new Thread(centroReparacion);
+        centroReparacionAcciones.start();
+
         // FIN TEST
         // VESTIDORES Y BANNOS
         inicializaBanos();
@@ -174,6 +159,14 @@ public class Main {
         for (Thread thread : mesasThreads) {
             thread.join();
         }
+
+        // Finalizamos los hilos de los recolectores
+        for (Thread thread : recolectoresThreads) {
+            thread.join();
+        }
+
+        // Finalizamos el centro de reparación
+        centroReparacionAcciones.join();
     }
 
    /**

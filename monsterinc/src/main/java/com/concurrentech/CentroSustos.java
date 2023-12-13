@@ -63,6 +63,10 @@ public class CentroSustos {
             Tanque maxitanque = almacenTanques.getTanque("Maxitanque");
             maxitanque.setEnergia(maxitanque.getCapacidad());
             tanquesLlenos.add(maxitanque);
+            // Notificamos el susto
+            System.out.println("Sully ha hecho un susto y llenado un maxitanque!");
+        } else {
+            System.out.println("Los monstruos han hecho un susto y llenado un tanque!");
         }
         // Quitamos el tanque y la puerta de la estacion
         estacion.setTanque(null);

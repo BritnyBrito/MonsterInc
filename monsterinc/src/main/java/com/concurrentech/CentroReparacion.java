@@ -8,9 +8,9 @@ import java.util.Queue;
 /**
  * Clase para representar el centro de reparación de la utilería
  */
-public class CentroReparacion {
+public class CentroReparacion implements Runnable {
     // orden en el que se van a reparar las cosas
-    Queue<Utileria> ordenReparacion = new LinkedList();
+    Queue<Utileria> ordenReparacion = new LinkedList<>();
     // tiempo que se tardan en reparar una utilería
     int tiempoReparacion;
     // para la simulacion, la probabilidad que algo de la utilería
@@ -25,13 +25,49 @@ public class CentroReparacion {
     // Variables para llevar control de que tarea se le asigna a que monstruo
     private  volatile int i = 0;
     private volatile int p = 0;
+    // Almacenes de puertas y tanques
+    private AlmacenPuertas almacenPuertas;
+    private AlmacenTanques almacenTanques;
+
+
     /**
-     * Inicializa a los monstruos para que esten al pendiente en cuanto haya una
-     * utilería que reparar
+     * Constructor de la clase
+     * @param almacenPuertas almacen de puertas
+     * @param almacenTanques almacen de tanques
      */
-    public void iniciaCentroReparacion(){
-        inicializaMonstruos();
+    public CentroReparacion(AlmacenPuertas almacenPuertas, AlmacenTanques almacenTanques){
+        this.almacenPuertas = almacenPuertas;
+        this.almacenTanques = almacenTanques;
     }
+
+
+    @Override
+    public void run() {
+        // Cada 5 segundos toma un tanque o una puerta al azar
+        // de los almacenes y simula su ruptura.
+        // Despues de un segundo, se manda a reparar.
+        inicializaMonstruos();
+        while (true) {
+            try {
+                Thread.sleep(5000);
+                if (Math.random() > 0.5){
+                    Puerta puerta = almacenPuertas.getPuertaRandom();
+                    simulaRoto(puerta);
+                    Thread.sleep(1000);
+                    reparar();
+                } else {
+                    Tanque tanque = almacenTanques.getTanqueRandom();
+                    simulaRoto(tanque);
+                    Thread.sleep(1000);
+                    reparar();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+
     /**
      * Simula que un objeto se rompio
      * @param utileria
@@ -114,4 +150,5 @@ public class CentroReparacion {
         Reparador m = monstruos[j];
         m.simulaReparar(this);
     }
+    
 }

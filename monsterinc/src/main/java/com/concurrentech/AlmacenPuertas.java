@@ -109,4 +109,34 @@ public class AlmacenPuertas {
         // Se regresa la puerta
         return puerta;
     }
+
+    // Similar al metodo anterior, pero regresa una puerta al azar
+    public Puerta getPuertaRandom(){
+        // Se protege el almacén
+        candado.lock();
+        // Se busca una puerta del tipo dado
+        Puerta puerta = null;
+        int index = (int) (Math.random() * puertasNinos.size());
+        puerta = puertasNinos.get(index);
+        // Si no hay puertas disponibles, se espera
+        while(puerta == null){
+            try {
+                candado.unlock();
+                Thread.sleep(1000);
+                candado.lock();
+                index = (int) (Math.random() * puertasNinos.size());
+                puerta = puertasNinos.get(index);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        // Se cambia el estado de la puerta a ocupada
+        puerta.setEstado("ocupada");
+        // Se elimina la puerta de la lista
+        puertasNinos.remove(puerta);
+        // Se desbloquea el almacén
+        candado.unlock();
+        // Se regresa la puerta
+        return puerta;
+    }
 }

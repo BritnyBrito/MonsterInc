@@ -86,4 +86,35 @@ public class AlmacenTanques {
         // Se regresa el tanque
         return tanque;
     }
+
+    // Similar al metodo anterior, pero regresa un tanque random
+    public Tanque getTanqueRandom(){
+        // Se protege el almacén
+        candado.lock();
+        // Se busca un tanque del tipo dado
+        Tanque tanque = null;
+        int index = (int) (Math.random() * tanques.size());
+        tanque = tanques.get(index);
+        // Si no se encontró un tanque del tipo dado, se espera
+        while (tanque == null) {
+            try {
+                candado.unlock();
+                Thread.sleep(1000);
+                candado.lock();
+                index = (int) (Math.random() * tanques.size());
+                tanque = tanques.get(index);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
+        }
+        // Se cambia el estado del tanque a ocupado
+        tanque.setEstado("ocupado");
+        // Se elimina el tanque de la lista
+        tanques.remove(tanque);
+        // Se desbloquea el almacén
+        candado.unlock();
+        // Se regresa el tanque
+        return tanque;
+    }
 }
