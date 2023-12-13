@@ -23,7 +23,7 @@ public class Mesero {
         int indicePedido = cafeteria.buscarOrden(mesa);
         if (indicePedido != -1) {
             Pedido pedido = cafeteria.sacarPedidoListo(indicePedido);
-            System.out.println("Mesero" + nombre + " llevando pedido de " + pedido.getPlatillo() + " a la mesa " + mesa);
+            System.out.println("Mesero " + nombre + " llevando pedido de " + pedido.getPlatillo() + " a la mesa " + mesa);
         } else {
             System.out.println("No hay pedidos listos para la mesa " + mesa);
         }

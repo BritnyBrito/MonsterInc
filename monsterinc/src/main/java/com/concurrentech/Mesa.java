@@ -28,10 +28,10 @@ public class Mesa implements Runnable {
 
     @Override
     public void run() {
-        // Hacemos un pedido cada 2 segundos
+        // Hacemos un pedido cada 1.5 segundos
         while (true) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1500);
                 hacerPedido();
             } catch (InterruptedException e) {
                 e.printStackTrace();

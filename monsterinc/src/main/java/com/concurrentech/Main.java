@@ -11,6 +11,7 @@ public class Main {
     public static Monstruo[] monstuos;
     public static ArrayList<Banno> bannos;
     public static int NUMERO_MOSTRUOS = 5;
+
     public static void main(String[] args) throws InterruptedException, IOException {
         // Sección para test de baños y vestidores
         /** 
@@ -52,7 +53,7 @@ public class Main {
         LinkedList<Thread> mesasThreads = new LinkedList<Thread>();
         for (Mesa mesa : mesas) {
             Thread thread = new Thread(mesa);
-            thread.setName(String.format("Mesa %d", mesa));
+            thread.setName(String.format("Mesa %s", mesa.toString()));
             mesasThreads.add(thread);
         }
 
@@ -183,13 +184,13 @@ public class Main {
         // Creamos el inventario
         HashMap<String, Integer> inventario = new HashMap<String, Integer>() {
             {
-                put("Pan", 10);
-                put("Carne", 10);
-                put("Lechuga", 10);
-                put("Tomate", 10);
-                put("Queso", 10);
-                put("Salchicha", 10);
-                put("Agua", 10);
+                put("Pan", 100);
+                put("Carne", 100);
+                put("Lechuga", 100);
+                put("Tomate", 100);
+                put("Queso", 100);
+                put("Salchicha", 100);
+                put("Agua", 100);
             }
         };
 

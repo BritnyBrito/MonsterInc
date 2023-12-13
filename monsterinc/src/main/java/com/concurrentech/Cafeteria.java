@@ -31,6 +31,7 @@ public class Cafeteria {
         this.pedidosListos = new LinkedList<Pedido>();
         this.pedidosListosLock = new ReentrantLock();
         this.pedidosPendientesLock = new ReentrantLock();
+        this.pedidosPendientes = new LinkedList<Pedido>();
     }
 
     // Método que regresa la cantidad de un ingrediente dado, protegido por candado
