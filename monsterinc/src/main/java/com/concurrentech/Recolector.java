@@ -17,6 +17,7 @@ public class Recolector{
     private AlmacenTanques almacen = new AlmacenTanques();
     // candado para evitar que se tenga un mal registro de la energía almacenada
     private Lock lock = new ReentrantLock();
+    
     /**
      * Método para vaciar la energía de un tanque en el recolector
      * @param tanque el tanque que se va a vaciar
@@ -36,6 +37,7 @@ public class Recolector{
             lock.unlock();
         }
         // regresamos el tanque, ahora disponible al almacen
+        tanque.setEnergia(0);
         tanque.setEstado("disponible");
         almacen.agregaTanque(tanque);
         System.out.println("Tanque descargado. Energia al momento:" + energiaAlMomento + ". Energía total: " + energiaTotal);
