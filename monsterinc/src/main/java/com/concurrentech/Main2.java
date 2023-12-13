@@ -39,7 +39,19 @@ public class Main2 {
     public static Timer timer;
     // cada cuanto alimentar monstruopolis
     private static int TIEMPO_ALIMENTACION= 1 * 10;
+    
     public static void main(String[] args) throws InterruptedException, IOException {
+        
+        // FABRICA DE PUERTAS
+        fabricaPuertas = new FabricaPuertas();
+        fabricaPuertasAcciones = new Thread(() -> fabricaPuertas.inicia());
+        fabricaPuertasAcciones.start();
+        
+        // FABRICA DE TANQUES
+        fabricaTanques = new FabricaTanques();
+        fabricaTanquesAcciones = new Thread(() -> fabricaTanques.inicia());
+        fabricaTanquesAcciones.start();
+        
         // RECOLECTOR
         timer = new Timer();
         recolector = new Recolector();
@@ -62,13 +74,34 @@ public class Main2 {
         ArrayList<Thread> aaa = new ArrayList<>();
         for(Tanque t:  tanques){
             aaa.add(new Thread(() -> recolector.vaciaTanque(t)));
-            try{
-                Thread.sleep(0, 40 * 1000);
-                
-            }catch(InterruptedException e){} 
         }
         for( Thread t: aaa){
             System.out.println("aaaaaa");
+            t.start();
+        }
+        // PARA CENTRO REPACION
+        CentroReparacion centroReparacion = new CentroReparacion();
+        Tanque[] tanques2 = {
+            new Tanque("a", 1),
+            new Tanque("b", 2),
+            new Tanque("a", 3),
+            new Tanque("c", 1),
+            new Tanque("a", 2),
+            new Tanque("a", 3),
+            new Tanque("b", 1),
+            new Tanque("a", 1),
+            new Tanque("a", 2),
+            new Tanque("a", 3),
+            new Tanque("b", 1),
+        };
+        ArrayList<Thread> aaa2 = new ArrayList<>();
+        Thread centroReparacionAA = new Thread(() -> centroReparacion.iniciaCentroReparacion());
+        centroReparacionAA.start();
+        for(Tanque t:  tanques2){
+            aaa2.add(new Thread(() -> centroReparacion.simulaRoto(t)));
+        }
+        for( Thread t: aaa2){
+            System.out.println("aaaaaa2");
             t.start();
         }
         // FIN TEST
@@ -79,21 +112,6 @@ public class Main2 {
         for (Thread t : monstruosAcciones) {
             t.start();
         }
-        for (Thread t : monstruosAcciones) {
-            t.join();
-        }
-        
-        // FABRICA DE PUERTAS
-        fabricaPuertas = new FabricaPuertas();
-        fabricaPuertasAcciones = new Thread(() -> fabricaPuertas.inicia());
-        fabricaPuertasAcciones.start();
-        
-        // FABRICA DE TANQUES
-        fabricaTanques = new FabricaTanques();
-        fabricaTanquesAcciones = new Thread(() -> fabricaTanques.inicia());
-        fabricaTanquesAcciones.start();
-        
-        
     }
     /**
     * Inicializamos los monstruos que iran al banno y usaran su vestidor
