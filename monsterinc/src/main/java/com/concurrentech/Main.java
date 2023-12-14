@@ -39,6 +39,8 @@ public class Main {
     public static Timer timer;
     // cada cuanto alimentar monstruopolis
     private static int TIEMPO_ALIMENTACION= 10 * 1000;
+    // Iteraciones de mesereado
+    private static int ITERACIONES = 100;
 
     public static void main(String[] args) throws InterruptedException, IOException {
         /// ALMACENES
@@ -59,24 +61,10 @@ public class Main {
         CentroRisas centroRisas = new CentroRisas(almacenPuertas, almacenTanques);
         CentroSustos centroSustos = new CentroSustos(almacenPuertas, almacenTanques);
         
-        // Creamos recolectores
-        LinkedList<Recolector> recolectores = new LinkedList<Recolector>();
-        recolectores.add(new Recolector(almacenTanques, centroSustos, centroRisas));
-        recolectores.add(new Recolector(almacenTanques, centroSustos, centroRisas));
-        recolectores.add(new Recolector(almacenTanques, centroSustos, centroRisas));
-
-        // Creamos los hilos de los recolectores
-        LinkedList<Thread> recolectoresThreads = new LinkedList<Thread>();
-        for (Recolector recolector : recolectores) {
-            Thread thread = new Thread(recolector);
-            thread.setName(recolector.toString());
-            recolectoresThreads.add(thread);
-        }
-
-        // Iniciamos los hilos de los recolectores
-        for (Thread thread : recolectoresThreads) {
-            thread.start();
-        }
+        // Creamos recolector
+        recolector = new Recolector(almacenTanques, centroSustos, centroRisas);
+        Thread recolectorAcciones = new Thread(recolector);
+        recolectorAcciones.start();
 
         // Iniciamos el timer para alimentar la ciudad
         timer = new Timer();
@@ -88,6 +76,9 @@ public class Main {
         Thread centroReparacionAcciones = new Thread(centroReparacion);
         centroReparacionAcciones.start();
 
+
+        // FIN TEST
+        
         // FIN TEST
         // VESTIDORES Y BANNOS
         inicializaBanos();
@@ -137,17 +128,29 @@ public class Main {
             thread.start();
         }
 
-        // Llevamos pedidos a las mesas cada 2 segundos
-        while (true) {
-            Thread.sleep(2000);
+        // Llevamos pedidos a las mesas y hacemos trabajar
+        // a los centros cada 3 segundos
+        // durante ITERACIONES_MESEREADO iteraciones
+        while (ITERACIONES > 0) {
+            ITERACIONES--;
             for (Mesa mesa : mesas) {
                 Mesero mesero = mesa.getMesero();
                 mesero.llevarPedido(mesa);
+            }
+            // Seleccionamos dos monstruos al azar
+            // y los mandamos aleatoriamente a un centro
+            int i = (int) (Math.random() * NUMERO_MOSTRUOS);
+            int k = (int) (Math.random() * NUMERO_MOSTRUOS);
+            if (Math.random() < 0.5) {
+                centroRisas.risas(monstruos[i], monstruos[k]);
+            } else {
+                centroSustos.susto(monstruos[i], monstruos[k]);
             }
             // Terminamos si usuario presiona enter
             if (System.in.available() > 0) {
                 break;
             }
+            Thread.sleep(3000);
         }
 
         // Finalizamos los hilos de los chefs
@@ -160,10 +163,8 @@ public class Main {
             thread.join();
         }
 
-        // Finalizamos los hilos de los recolectores
-        for (Thread thread : recolectoresThreads) {
-            thread.join();
-        }
+        // Finalizamos el recolector
+        revisaRecolector.join();
 
         // Finalizamos el centro de reparación
         centroReparacionAcciones.join();

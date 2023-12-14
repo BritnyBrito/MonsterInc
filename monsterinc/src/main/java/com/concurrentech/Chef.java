@@ -17,10 +17,10 @@ public class Chef implements Runnable {
 
     @Override
     public void run() {
-        // Cocinamos cada 2 segundos
+        // Cocinamos cada 6 segundos
         while (true) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(6000);
                 cocina();
             } catch (InterruptedException e) {
                 e.printStackTrace();

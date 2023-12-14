@@ -36,11 +36,11 @@ public class Recolector implements Runnable {
 
     @Override
     public void run() {
-        // Cada 5 segundos, sacamos los tanques llenos
+        // Cada 7 segundos, sacamos los tanques llenos
         // de los centros y los vaciamos en el recolector
         while (true) {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(7000);
                 // sacamos los tanques llenos de los centros
                 LinkedList<Tanque> tanqueSustos = centroSustos.getTanquesLlenos();
                 LinkedList<Tanque> tanqueRisas = centroRisas.getTanquesLlenos();
@@ -56,8 +56,6 @@ public class Recolector implements Runnable {
                         vaciaTanque(tanque);
                     }
                 }
-                // vaciamos el recolector
-                vaciaRecolector();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
