@@ -41,6 +41,9 @@ public class CentroReparacion implements Runnable {
     }
 
 
+    /**
+     * Método para simular el centro de reparación
+     */
     @Override
     public void run() {
         // Cada 5 segundos toma un tanque o una puerta al azar
@@ -89,6 +92,7 @@ public class CentroReparacion implements Runnable {
         }
         return false;
     }
+
     /**
      * Método para reparar una utilería
      */

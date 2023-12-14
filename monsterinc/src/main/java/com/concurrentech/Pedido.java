@@ -1,23 +1,39 @@
 package com.concurrentech;
 
+/**
+ * Clase que representa un pedido.
+ * Permite simular el hacer pedidos a la cafeteria.
+ */
 public class Pedido {
     // Platillo que se pide
     private Platillo platillo;
     // Mesa asociada
     private Mesa mesa;
 
-    // Constructor
+    /**
+     * Constructor de la clase Pedido
+     * @param platillo el platillo a pedir
+     * @param mesa la mesa a la que se le hace el pedido
+     */
     public Pedido(Platillo platillo, Mesa mesa) {
         this.platillo = platillo;
         this.mesa = mesa;
     }
 
-    // Método que regresa el platillo
+
+    /**
+     * Método para obtener el platillo
+     * @return el platillo
+     */
     public Platillo getPlatillo() {
         return platillo;
     }
 
-    // Método que regresa la mesa
+
+    /**
+     * Método para obtener la mesa
+     * @return la mesa
+     */
     public Mesa getMesa() {
         return mesa;
     }

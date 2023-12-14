@@ -8,6 +8,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.HashMap;
 
+/**
+ * Clase que representa la ciudad de Monstruopolis.
+ * Permite simular el funcionamiento de la ciudad.
+ */
 public class Main {
     // PARA LOS BANOS Y VESTIDORES
     // variable para saber a que monstuo se le asigna que accion: ir al vestido y baño
@@ -42,6 +46,12 @@ public class Main {
     // Iteraciones de mesereado
     private static int ITERACIONES = 100;
 
+    /**
+     * Método main de la clase Main
+     * @param args argumentos de la línea de comandos
+     * @throws InterruptedException
+     * @throws IOException
+     */
     public static void main(String[] args) throws InterruptedException, IOException {
         /// ALMACENES
         AlmacenPuertas almacenPuertas = new AlmacenPuertas();
@@ -213,7 +223,12 @@ public class Main {
         m.simulaVestidor("elemento" + String.valueOf(j));
         m.simulaBanno(bannos);
     }
-    // Método para crear chefs con nombres aleatorios, creamos 5 chefs
+
+    /**
+     * Método para crear chefs, creamos 5 chefs
+     * @param cafeteria la cafetería a la que pertenecen los chefs
+     * @return una lista con los chefs creados
+     */
     private static LinkedList<Chef> inicializaChefs(Cafeteria cafeteria) {
         LinkedList<Chef> chefs = new LinkedList<Chef>();
         chefs.add(new Chef(false, cafeteria, "Juan"));
@@ -224,7 +239,11 @@ public class Main {
         return chefs;
     }
 
-    // Método para crear meseros, creamos 10 meseros
+    /**
+     * Método para crear meseros, creamos 10 meseros
+     * @param cafeteria la cafetería a la que pertenecen los meseros
+     * @return una lista con los meseros creados
+     */
     private static LinkedList<Mesero> inicializaMeseros(Cafeteria cafeteria) {
         LinkedList<Mesero> meseros = new LinkedList<Mesero>();
         meseros.add(new Mesero("Juan", cafeteria));
@@ -241,7 +260,12 @@ public class Main {
     }
     
 
-    // Método para crear mesas, creamos 10 mesas y a cada una le corresponde un mesero
+    /**
+     * Método para crear mesas, creamos 10 mesas
+     * @param cafeteria la cafetería a la que pertenecen las mesas
+     * @param meseros la lista de meseros que atenderán las mesas
+     * @return una lista con las mesas creadas
+     */
     private static LinkedList<Mesa> inicializaMesas(Cafeteria cafeteria, LinkedList<Mesero> meseros) {
         LinkedList<Mesa> mesas = new LinkedList<Mesa>();
         for (int i = 0; i < 10; i++) {
@@ -250,8 +274,10 @@ public class Main {
         return mesas;
     }
 
-    // Método para crear una cafetería
-    // Nos inventamos algunos platillos, un inventario y una lista de mesas
+    /**
+     * Método para inicializar la cafetería
+     * @return la cafetería creada
+     */
     private static Cafeteria inicializaCafeteria() {
         // Creamos los platillos
         Platillo platillo1 = new Platillo("Hamburguesa", new HashMap<String, Integer>() {

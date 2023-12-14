@@ -3,6 +3,10 @@ package com.concurrentech;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Clase que representa un almacén de puertas.
+ * Permite agregar y obtener puertas del almacén de acuerdo a su tipo y disponibilidad.
+ */
 public class AlmacenPuertas {
     // Lista de puertas de niños
     private ArrayList<Puerta> puertasNinos;
@@ -110,7 +114,15 @@ public class AlmacenPuertas {
         return puerta;
     }
 
-    // Similar al metodo anterior, pero regresa una puerta al azar
+    /**
+     * Método que regresa una puerta del almacén
+     * de manera aleatoria, la puerta debe estar disponible.
+     * En caso de no encontrar una puerta del tipo dado, o
+     * de que no haya puertas disponibles, el método
+     * espera hasta que haya una puerta disponible.
+     * Al sacar una puerta del almacen, se elimina de la lista.
+     * @return la puerta encontrada
+     */
     public Puerta getPuertaRandom(){
         // Se protege el almacén
         candado.lock();

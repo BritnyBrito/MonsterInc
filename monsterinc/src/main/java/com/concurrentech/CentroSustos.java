@@ -3,6 +3,10 @@ package com.concurrentech;
 import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Clase que representa un centro de sustos.
+ * Permite simular el llenado de tanques con sustos.
+ */
 public class CentroSustos {
     private AlmacenPuertas almacenPuertas;
     private AlmacenTanques almacenTanques;
@@ -12,6 +16,11 @@ public class CentroSustos {
     LinkedList<Estacion> estaciones;
     ReentrantLock candado;
 
+    /**
+     * Constructor de la clase CentroSustos
+     * @param almacenPuertas el almacen de puertas asociado
+     * @param almacenTanques el almacen de tanques asociado
+     */
     public CentroSustos(AlmacenPuertas almacenPuertas, AlmacenTanques almacenTanques){
         this.almacenPuertas = almacenPuertas;
         this.almacenTanques = almacenTanques;
@@ -23,15 +32,12 @@ public class CentroSustos {
     }
 
 
-    // Método para simular un susto. Dado un par de monstruos,
-    // selecciona un tanque de los disponibles y una puerta
-    // del almacen, y lo asigna a una estacion. En caso 
-    // de ya existir una estacion con los mismos monstruos,
-    // se asigna el tanque y la puerta a esa estacion.
-    // Se llena el tanque y se manda a la lista de tanques llenos.
-    // En caso de que alguno de los monstruos sea Sully,
-    // se fabrica un maxitanque y se llena.
-    // Si no hay tanques disponibles, se deben fabricar.
+
+    /**
+     * Método para simular el centro de sustos
+     * @param m1 el primer monstruo a participar
+     * @param m2 el segundo monstruo a participar
+     */
     public void susto(Monstruo m1, Monstruo m2) {
         // Seleccionamos un tanque estandar
         Tanque tanque = almacenTanques.getTanque("Estandar");
@@ -82,7 +88,11 @@ public class CentroSustos {
         almacenPuertas.agregaPuerta(puerta);
     }
 
-    // Metodo para regresar los tanques llenos y vaciar la lista
+
+    /**
+     * Regresa la lista de tanques llenos
+     * @return la lista de tanques llenos
+     */
     public LinkedList<Tanque> getTanquesLlenos() {
         LinkedList<Tanque> tanques = tanquesLlenos;
         tanquesLlenos = new LinkedList<Tanque>();

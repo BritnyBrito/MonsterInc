@@ -91,6 +91,10 @@ public class Monstruo {
         return banno;
     }
 
+    /**
+     * Método para obtener el tipo de monstruo
+     * @return el tipo de monstruo
+     */
     public String getTipo() {
         return tipo;
     }

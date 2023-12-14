@@ -87,7 +87,14 @@ public class AlmacenTanques {
         return tanque;
     }
 
-    // Similar al metodo anterior, pero regresa un tanque random
+    /**
+     * Método que regresa un tanque del almacén
+     * de manera aleatoria, el tanque debe estar disponible.
+     * En caso de que no haya tanques disponibles, el método
+     * espera hasta que haya un tanque disponible.
+     * Al sacar un tanque del almacen, se elimina de la lista.
+     * @return el tanque encontrado
+     */
     public Tanque getTanqueRandom(){
         // Se protege el almacén
         candado.lock();

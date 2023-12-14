@@ -1,11 +1,22 @@
 package com.concurrentech;
 
+/**
+ * Clase que representa una estación de trabajo.
+ * Permite simular el llenado de tanques con sustos o con risas.
+ */
 public class Estacion {
     private Monstruo monstruoA;
     private Monstruo monstruoB;
     private Tanque tanque;
     private Puerta puerta;
 
+    /**
+     * Constructor de la clase Estacion
+     * @param monstruoA el primer monstruo a participar
+     * @param monstruoB el segundo monstruo a participar
+     * @param tanque el tanque a utilizar
+     * @param puerta la puerta a utilizar
+     */
     public Estacion(Monstruo monstruoA, Monstruo monstruoB, Tanque tanque, Puerta puerta){
         this.monstruoA = monstruoA;
         this.monstruoB = monstruoB;
@@ -13,26 +24,51 @@ public class Estacion {
         this.puerta = puerta;
     }
 
+
+    /**
+     * Metodo para obtener el primer monstruo
+     * @return el primer monstruo
+     */
     public Monstruo getMonstruoA() {
         return monstruoA;
     }
 
+    /**
+     * Metodo para obtener el segundo monstruo
+     * @return el segundo monstruo
+     */
     public Monstruo getMonstruoB() {
         return monstruoB;
     }
 
+    /**
+     * Metodo para obtener el tanque
+     * @return el tanque
+     */
     public Tanque getTanque() {
         return tanque;
     }
 
+    /**
+     * Metodo para configurar el tanque
+     * @param tanque el tanque a configurar
+     */
     public void setTanque(Tanque tanque) {
         this.tanque = tanque;
     }
 
+    /**
+     * Metodo para obtener la puerta
+     * @return la puerta
+     */
     public Puerta getPuerta() {
         return puerta;
     }
 
+    /**
+     * Metodo para configurar la puerta
+     * @param puerta la puerta a configurar
+     */
     public void setPuerta(Puerta puerta) {
         this.puerta = puerta;
     }

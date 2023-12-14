@@ -34,6 +34,9 @@ public class Recolector implements Runnable {
     }
 
 
+    /**
+     * Método para simular el recolector
+     */
     @Override
     public void run() {
         // Cada 7 segundos, sacamos los tanques llenos
