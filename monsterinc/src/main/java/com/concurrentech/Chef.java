@@ -1,5 +1,9 @@
 package com.concurrentech;
 
+/**
+ * Clase que representa un chef.
+ * Permite producir platillos.
+ */
 public class Chef implements Runnable {
     // Boolean que indica si es un chef profesional
     private boolean esProfesional;
@@ -8,19 +12,27 @@ public class Chef implements Runnable {
     // Nombre
     private String nombre;
 
-    // Constructor 
+    /**
+     * Constructor de la clase Chef
+     * @param esProfesional boolean que indica si es un chef profesional
+     * @param cafeteria la cafetería asociada
+     * @param nombre el nombre del chef
+     */
     public Chef(boolean esProfesional, Cafeteria cafeteria, String nombre) {
         this.esProfesional = esProfesional;
         this.cafeteria = cafeteria;
         this.nombre = nombre;
     }
 
+    /**
+     * Método para simular el chef
+     */
     @Override
     public void run() {
-        // Cocinamos cada 2 segundos
+        // Cocinamos cada 6 segundos
         while (true) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(6000);
                 cocina();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -28,9 +40,11 @@ public class Chef implements Runnable {
         }
     }
 
-    // Método que produce platillos 
-    // El platillo se obtiene de la lista de pedidos pendientes
-    // Al producir un platillo, se disminuye el inventario y se inserta en la fila de pedidos listos
+    /**
+     * Método que produce platillos.
+     * El platillo se obtiene de la lista de pedidos pendientes.
+     * Al producir un platillo, se disminuye el inventario y se inserta en la fila de pedidos listos.
+     */
     public void cocina() {
         Pedido pedido = cafeteria.sacarPedidoPendiente();
         Platillo platillo = pedido.getPlatillo();
@@ -61,7 +75,11 @@ public class Chef implements Runnable {
         System.out.println("Chef " + nombre + " produjo " + platillo + " para la mesa " + pedido.getMesa());
     }
 
-        public String getNombre() {
+    /**
+     * Regresa el nombre del chef
+     * @return el nombre del chef
+     */
+    public String getNombre() {
         return nombre;
     }
     

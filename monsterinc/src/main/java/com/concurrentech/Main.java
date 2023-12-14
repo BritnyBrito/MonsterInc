@@ -4,27 +4,99 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.HashMap;
 
+/**
+ * Clase que representa la ciudad de Monstruopolis.
+ * Permite simular el funcionamiento de la ciudad.
+ */
 public class Main {
-    public static Thread[] monstuosAcciones;
-    public static Monstruo[] monstuos;
+    // PARA LOS BANOS Y VESTIDORES
+    // variable para saber a que monstuo se le asigna que accion: ir al vestido y baño
+    private static int j = 0;
+    // arreglo de hilos donde cada hilo permitira que un monstruo realice acciones
+    public static Thread[] monstruosAcciones;
+    // arreglo de monstruos genericos
+    public static Monstruo[] monstruos;
+    // lista con todos lo baños existentes
     public static ArrayList<Banno> bannos;
+    // Máximo número de monstruos que trataran de usar los baños y vestidor
     public static int NUMERO_MOSTRUOS = 5;
+
+    // PARA LA FABRICA DE PUERTAS
+    public static FabricaPuertas fabricaPuertas;
+    // Hilo para llevar las ejecucionde la fabrica de puertas
+    public static Thread fabricaPuertasAcciones;
+
+    // PARA LA FABRICA DE TANQUES
+    public static FabricaTanques fabricaTanques;
+    // Hilo para llevar las ejecucionde la fabrica de tanques
+    public static Thread fabricaTanquesAcciones;
+    
+    //PARA EL RECOLECTOR
+    public static Recolector recolector;
+    // Hilo para realizar la alimentación de energía de la cuiudad
+    public static Thread revisaRecolector;
+    // timer para ver cuando hacer la alimentación
+    public static Timer timer;
+    // cada cuanto alimentar monstruopolis
+    private static int TIEMPO_ALIMENTACION= 10 * 1000;
+    // Iteraciones de mesereado
+    private static int ITERACIONES = 100;
+
+    /**
+     * Método main de la clase Main
+     * @param args argumentos de la línea de comandos
+     * @throws InterruptedException
+     * @throws IOException
+     */
     public static void main(String[] args) throws InterruptedException, IOException {
-        // Sección para test de baños y vestidores
-        /** 
+        /// ALMACENES
+        AlmacenPuertas almacenPuertas = new AlmacenPuertas();
+        AlmacenTanques almacenTanques = new AlmacenTanques();
+
+        // FABRICA DE PUERTAS
+        fabricaPuertas = new FabricaPuertas(almacenPuertas);
+        fabricaPuertasAcciones = new Thread(() -> fabricaPuertas.inicia());
+        fabricaPuertasAcciones.start();
+        
+        // FABRICA DE TANQUES
+        fabricaTanques = new FabricaTanques(almacenTanques);
+        fabricaTanquesAcciones = new Thread(() -> fabricaTanques.inicia());
+        fabricaTanquesAcciones.start();
+
+        // CENTROS
+        CentroRisas centroRisas = new CentroRisas(almacenPuertas, almacenTanques);
+        CentroSustos centroSustos = new CentroSustos(almacenPuertas, almacenTanques);
+        
+        // Creamos recolector
+        recolector = new Recolector(almacenTanques, centroSustos, centroRisas);
+        Thread recolectorAcciones = new Thread(recolector);
+        recolectorAcciones.start();
+
+        // Iniciamos el timer para alimentar la ciudad
+        timer = new Timer();
+        revisaRecolector = new Thread(() -> alimentaCiudad());
+        revisaRecolector.start();
+
+        // PARA CENTRO REPACION
+        CentroReparacion centroReparacion = new CentroReparacion(almacenPuertas, almacenTanques);
+        Thread centroReparacionAcciones = new Thread(centroReparacion);
+        centroReparacionAcciones.start();
+
+
+        // FIN TEST
+        
+        // FIN TEST
+        // VESTIDORES Y BANNOS
         inicializaBanos();
         inicializaMonstruos();
         initThreads();
-        for (Thread t : monstuosAcciones) {
+        for (Thread t : monstruosAcciones) {
             t.start();
         }
-        for (Thread t : monstuosAcciones) {
-            t.join();
-        }
-        System.out.println("Yap" );
-         */
         
         // Sección para test de cafetería
 
@@ -52,7 +124,7 @@ public class Main {
         LinkedList<Thread> mesasThreads = new LinkedList<Thread>();
         for (Mesa mesa : mesas) {
             Thread thread = new Thread(mesa);
-            thread.setName(String.format("Mesa %d", mesa));
+            thread.setName(String.format("Mesa %s", mesa.toString()));
             mesasThreads.add(thread);
         }
 
@@ -66,17 +138,29 @@ public class Main {
             thread.start();
         }
 
-        // Llevamos pedidos a las mesas cada 2 segundos
-        while (true) {
-            Thread.sleep(2000);
+        // Llevamos pedidos a las mesas y hacemos trabajar
+        // a los centros cada 3 segundos
+        // durante ITERACIONES_MESEREADO iteraciones
+        while (ITERACIONES > 0) {
+            ITERACIONES--;
             for (Mesa mesa : mesas) {
                 Mesero mesero = mesa.getMesero();
                 mesero.llevarPedido(mesa);
+            }
+            // Seleccionamos dos monstruos al azar
+            // y los mandamos aleatoriamente a un centro
+            int i = (int) (Math.random() * NUMERO_MOSTRUOS);
+            int k = (int) (Math.random() * NUMERO_MOSTRUOS);
+            if (Math.random() < 0.5) {
+                centroRisas.risas(monstruos[i], monstruos[k]);
+            } else {
+                centroSustos.susto(monstruos[i], monstruos[k]);
             }
             // Terminamos si usuario presiona enter
             if (System.in.available() > 0) {
                 break;
             }
+            Thread.sleep(3000);
         }
 
         // Finalizamos los hilos de los chefs
@@ -88,25 +172,63 @@ public class Main {
         for (Thread thread : mesasThreads) {
             thread.join();
         }
+
+        // Finalizamos el recolector
+        revisaRecolector.join();
+
+        // Finalizamos el centro de reparación
+        centroReparacionAcciones.join();
     }
 
+   /**
+    * Inicializamos los monstruos que iran al banno y usaran su vestidor
+    */
     private static void inicializaMonstruos(){
-        monstuos = new Monstruo[NUMERO_MOSTRUOS];
-        monstuos[0] = new Monstruo(new ArrayList<Integer>(Arrays.asList(1,2)),"123");
-        monstuos[1] = new Monstruo(new ArrayList<Integer>(Arrays.asList(1,2)),"dcd");
-        monstuos[2] = new Monstruo(new ArrayList<Integer>(Arrays.asList(1,0)),"ew");
-        monstuos[3] = new Monstruo(new ArrayList<Integer>(Arrays.asList(2)),"43r");
-        monstuos[4] = new Monstruo(new ArrayList<Integer>(Arrays.asList(0)),"4r");
+        monstruos = new Monstruo[NUMERO_MOSTRUOS];
+        monstruos[0] = new Monstruo(new ArrayList<Integer>(Arrays.asList(1,2)),"123","Peludo");
+        monstruos[1] = new Monstruo(new ArrayList<Integer>(Arrays.asList(1,2)),"dcd","Peludo");
+        monstruos[2] = new Monstruo(new ArrayList<Integer>(Arrays.asList(1,2)),"ew","Peludo");
+        monstruos[3] = new Monstruo(new ArrayList<Integer>(Arrays.asList(0,1)),"43r", "Grande");
+        monstruos[4] = new Monstruo(new ArrayList<Integer>(Arrays.asList(0,1)),"4rmk","Grande");
     }
 
+    /**
+    * Inicializamos los baños
+    */
     private static void inicializaBanos(){
         bannos = new ArrayList<>();
-        bannos.add(new Banno(NUMERO_MOSTRUOS, 1, "1"));
-        bannos.add(new Banno(NUMERO_MOSTRUOS, 2, "2"));
-        bannos.add(new Banno(NUMERO_MOSTRUOS, 3, "3"));
+        bannos.add(new Banno(NUMERO_MOSTRUOS, 1, 1));
+        bannos.add(new Banno(NUMERO_MOSTRUOS, 2, 2));
+        bannos.add(new Banno(NUMERO_MOSTRUOS, 3, 3));
     }
 
-    // Método para crear chefs con nombres aleatorios, creamos 5 chefs
+    /**
+     * Método para inicializar las acciones de los monstruos genericos: ir su vestido 
+     * y al baño 
+     */
+    private static void initThreads() {
+        monstruosAcciones = new Thread[NUMERO_MOSTRUOS];
+        for (int i = 0; i < NUMERO_MOSTRUOS; ++i) {
+            monstruosAcciones[i] = new Thread(() -> idaVestidorBanno());
+            monstruosAcciones[i].setName(String.format("%d", i));
+        }
+    }
+    /**
+     * Metodo para que un monstruo vaya a su vestidor:  agrega, modifique 
+     * y finalmente elimine un elemento de su vestidor. Después va al baño
+     */
+    private static void idaVestidorBanno() {
+        Monstruo m = monstruos[j];
+        j++;
+        m.simulaVestidor("elemento" + String.valueOf(j));
+        m.simulaBanno(bannos);
+    }
+
+    /**
+     * Método para crear chefs, creamos 5 chefs
+     * @param cafeteria la cafetería a la que pertenecen los chefs
+     * @return una lista con los chefs creados
+     */
     private static LinkedList<Chef> inicializaChefs(Cafeteria cafeteria) {
         LinkedList<Chef> chefs = new LinkedList<Chef>();
         chefs.add(new Chef(false, cafeteria, "Juan"));
@@ -117,7 +239,11 @@ public class Main {
         return chefs;
     }
 
-    // Método para crear meseros, creamos 10 meseros
+    /**
+     * Método para crear meseros, creamos 10 meseros
+     * @param cafeteria la cafetería a la que pertenecen los meseros
+     * @return una lista con los meseros creados
+     */
     private static LinkedList<Mesero> inicializaMeseros(Cafeteria cafeteria) {
         LinkedList<Mesero> meseros = new LinkedList<Mesero>();
         meseros.add(new Mesero("Juan", cafeteria));
@@ -134,7 +260,12 @@ public class Main {
     }
     
 
-    // Método para crear mesas, creamos 10 mesas y a cada una le corresponde un mesero
+    /**
+     * Método para crear mesas, creamos 10 mesas
+     * @param cafeteria la cafetería a la que pertenecen las mesas
+     * @param meseros la lista de meseros que atenderán las mesas
+     * @return una lista con las mesas creadas
+     */
     private static LinkedList<Mesa> inicializaMesas(Cafeteria cafeteria, LinkedList<Mesero> meseros) {
         LinkedList<Mesa> mesas = new LinkedList<Mesa>();
         for (int i = 0; i < 10; i++) {
@@ -143,8 +274,10 @@ public class Main {
         return mesas;
     }
 
-    // Método para crear una cafetería
-    // Nos inventamos algunos platillos, un inventario y una lista de mesas
+    /**
+     * Método para inicializar la cafetería
+     * @return la cafetería creada
+     */
     private static Cafeteria inicializaCafeteria() {
         // Creamos los platillos
         Platillo platillo1 = new Platillo("Hamburguesa", new HashMap<String, Integer>() {
@@ -183,13 +316,13 @@ public class Main {
         // Creamos el inventario
         HashMap<String, Integer> inventario = new HashMap<String, Integer>() {
             {
-                put("Pan", 10);
-                put("Carne", 10);
-                put("Lechuga", 10);
-                put("Tomate", 10);
-                put("Queso", 10);
-                put("Salchicha", 10);
-                put("Agua", 10);
+                put("Pan", 100);
+                put("Carne", 100);
+                put("Lechuga", 100);
+                put("Tomate", 100);
+                put("Queso", 100);
+                put("Salchicha", 100);
+                put("Agua", 100);
             }
         };
 
@@ -207,22 +340,18 @@ public class Main {
     }
 
 
-    private static int j = 0;
-    private static void initThreads() {
-        monstuosAcciones = new Thread[NUMERO_MOSTRUOS];
-        for (int i = 0; i < NUMERO_MOSTRUOS; ++i) {
-            monstuosAcciones[i] = new Thread(() -> adquiereRondas());
-            monstuosAcciones[i].setName(String.format("%d", i));
-            //j++;
-        }
-    }
-    private static void adquiereRondas() {
-        //int i = Integer.valueOf(Thread.currentThread().getName());
-        Monstruo m = monstuos[j];
-        j++;
-        m.simulaBanno(bannos);
-        m.simulaVestidor(String.valueOf(j));
-    }
+   
+    /**
+     * Metodo que se aseguro que se le brinde energía a la ciudad cada TIEMPO_ALIMENTACION 
+     */
+    private static void alimentaCiudad(){
+        timer.scheduleAtFixedRate(new TimerTask() {
+             @Override
+             public void run() {
+                 recolector.vaciaRecolector();
+             }
+         }, 0, TIEMPO_ALIMENTACION); 
+     }
 
 
 

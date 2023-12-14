@@ -2,6 +2,10 @@ package com.concurrentech;
 
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Clase que representa una mesa.
+ * Permite simular el hacer pedidos a la cafeteria.
+ */
 public class Mesa implements Runnable {
     // Número de mesa
     private int numero;
@@ -16,7 +20,14 @@ public class Mesa implements Runnable {
     // Mesero asociado
     private Mesero mesero;
 
-    // Constructor
+
+    /**
+     * Constructor de la clase Mesa
+     * @param numero el número de mesa
+     * @param tamanno la capacidad de la mesa
+     * @param cafeteria la cafeteria asociada
+     * @param mesero el mesero asociado
+     */
     public Mesa(int numero, int tamanno, Cafeteria cafeteria, Mesero mesero) {
         this.numero = numero;
         this.tamanno = tamanno;
@@ -26,12 +37,15 @@ public class Mesa implements Runnable {
         this.mesero = mesero;
     }
 
+    /**
+     * Método para simular la mesa
+     */
     @Override
     public void run() {
-        // Hacemos un pedido cada 2 segundos
+        // Hacemos un pedido cada 5 segundos
         while (true) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(5000);
                 hacerPedido();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -39,9 +53,11 @@ public class Mesa implements Runnable {
         }
     }
 
-    // Método para agregar un cliente a la mesa, protegido por candado
-    // En caso de que el numero de ocupados sea igual al tamaño de la mesa, 
-    // lanzamos una excepción
+    /**
+     * Método para agregar un cliente a la mesa, protegido por candado
+     * En caso de que el numero de ocupados sea igual al tamaño de la mesa,
+     * lanzamos una excepción
+     */
     public void agregarCliente() {
         lock.lock();
         try {
@@ -56,7 +72,9 @@ public class Mesa implements Runnable {
         }
     }
 
-    // Método para quitar un cliente de la mesa, protegido por candado
+    /**
+     * Método para quitar un cliente de la mesa, protegido por candado
+     */
     public void quitarCliente() {
         ReentrantLock lock = new ReentrantLock();
         lock.lock();
@@ -67,8 +85,12 @@ public class Mesa implements Runnable {
         }
     }
 
-    // Método para seleccionar algún platillo al azar de los que ofrece la cafeteria
-    // y hacer un pedido
+
+    /**
+     * Método para hacer un pedido a la cafeteria
+     * Se obtiene un platillo aleatorio de la lista de platillos de la cafeteria
+     * y se le hace un pedido al mesero
+     */
     public void hacerPedido() {
         int indicePlatillo = (int) (Math.random() * cafeteria.getPlatillos().size());
         Platillo platillo = cafeteria.getPlatillos().get(indicePlatillo);
@@ -77,6 +99,10 @@ public class Mesa implements Runnable {
         System.out.println("Mesa " + numero + " hizo pedido de " + platillo);
     }
 
+    /**
+     * Método para obtener el mesero asociado
+     * @return el mesero asociado
+     */
     public Mesero getMesero() {
         return mesero;
     }
